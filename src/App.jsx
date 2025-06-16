@@ -28,7 +28,7 @@ const Logo = ({ size = 45, className = "" }) => (
 const navLinks = [
   { name: "Home", to: "/" },
   { name: "About", to: "/about" },
-  { name: "Services", to: "/services" },
+  { name: "Services", to: "/Services" },
   { name: "Case Studies", to: "/CasePage" },
   { name: "Testimonials", to: "/testimonials" },
   { name: "Blog", to: "/BlogPage" },
@@ -43,17 +43,11 @@ const Navbar = () => {
   const isActive = (link) => {
     if (link.to === "/") return location.pathname === "/" && !location.hash;
     if (link.to === "/about") return location.pathname === "/about";
-    if (link.to === "/services") return location.pathname === "/services";
+    if (link.to === "/services") return location.pathname === "/Services";
     if (link.to === "/testimonials") return location.pathname === "/testimonials";
     if (link.to === "/BlogPage") return location.pathname === "/BlogPage";
     if (link.to === "/CasePage") return location.pathname === "/CasePage";
     // For in-page sections, match hash and be on home page
-    if (link.to.startsWith("/"))
-      return (
-        location.pathname === "/" &&
-        location.hash === link.to.replace("/", "")
-      );
-    return false;
   };
 
   // For mobile menu: close on nav
