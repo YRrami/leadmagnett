@@ -94,7 +94,7 @@ const Navbar = () => {
         {/* Desktop Nav */}
         <ul className="hidden xl:flex gap-2 sm:gap-4 lg:gap-7 items-center h-14" role="menubar">
           {navLinks.map((link) =>
-            (link.to === "/" || link.to === "/about") ? (
+             (link.to === "/" || link.to === "/about" || link.to === "/BlogPage" || link.to === "/CasePage" || link.to === "/testimonials"|| link.to === "/services"|| link.to === "/Contact") ? (
               <li key={link.name} role="none">
                 <Link
                   to={link.to}
