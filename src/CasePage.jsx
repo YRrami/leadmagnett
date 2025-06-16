@@ -96,8 +96,8 @@ export default function CasePage() {
               </div>
             </div>
             <div className="flex-grow" />
-            <a
-              href="#cta"
+            <Link
+              href="/Contact"
               className="
                 mt-6 w-full
                 relative
@@ -118,7 +118,7 @@ export default function CasePage() {
             >
               <span className="relative z-10">Want results like this? Get a Free Audit</span>
               <FaArrowRight className="relative z-10 text-lg group-hover:translate-x-1 transition-transform" />
-            </a>
+            </Link>
           </div>
         ))}
       </section>

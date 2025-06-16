@@ -135,8 +135,8 @@ const Navbar = () => {
             )
           )}
           <li role="none">
-            <a
-              href="/Contact"
+            <Link
+              to="/Contact"
               className="ml-1 xl:ml-3 bg-gold text-black font-bold px-4 py-2 rounded-2xl
                 transition shadow-md border border-gold/0
                 hover:brightness-110
@@ -149,7 +149,7 @@ const Navbar = () => {
             >
               <span className="relative z-10">Get Your Free Audit</span>
               <span className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 hover:opacity-60 transition-opacity duration-300 bg-gold blur-lg z-0" />
-            </a>
+            </Link>
           </li>
         </ul>
         {/* Hamburger/X for Mobile */}
@@ -227,8 +227,8 @@ const Navbar = () => {
                 )
               )}
               <li className="mt-3" role="none">
-                <a
-                  href="/Contact"
+                <Link
+                  to="/Contact"
                   className="block bg-gold text-black font-bold px-4 sm:px-6 py-3 rounded-2xl
                     hover:brightness-110 hover:shadow-[0_0_16px_4px_rgba(255,215,0,0.65)]
                     relative overflow-hidden text-center text-base sm:text-lg transition focus:outline-gold
@@ -238,7 +238,7 @@ const Navbar = () => {
                 >
                   <span className="relative z-10">Get Your Free Audit</span>
                   <span className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 hover:opacity-60 transition-opacity duration-300 bg-gold blur-lg z-0" />
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -801,13 +801,13 @@ const CTAStrip = () => (
       <div className="text-2xl sm:text-3xl font-black text-black tracking-tight">
         Let’s build a campaign that performs.
       </div>
-      <a
-        href="/Contact"
+      <Link
+        to="/Contact"
         className="mt-4 sm:mt-0 bg-black text-gold font-bold px-10 py-4 rounded-2xl text-lg shadow-lg hover:scale-105 hover:brightness-110 hover:shadow-gold/40 transition-all duration-200 pulse-gold"
         aria-label="Claim Your Free Audit"
       >
         Claim Your Free Audit
-      </a>
+      </Link>
     </div>
     <style>{`
       .pulse-gold {
@@ -841,10 +841,10 @@ const Footer = () => (
           </Link>
         </li>
         {/* Leave the rest as hash until you add more pages */}
-        <li><a href="/services" className="hover:text-gold transition">Services</a></li>
-        <li><a href="/CasePage" className="hover:text-gold transition">Case Studies</a></li>
-        <li><a href="/testimonials" className="hover:text-gold transition">Testimonials</a></li>
-        <li><a href="/BlogPage" className="hover:text-gold transition">Blog</a></li>
+        <li><Link to="/services" className="hover:text-gold transition">Services</Link></li>
+        <li><Link to="/CasePage" className="hover:text-gold transition">Case Studies</Link></li>
+        <li><Link to="/testimonials" className="hover:text-gold transition">Testimonials</Link></li>
+        <li><Link to="/BlogPage" className="hover:text-gold transition">Blog</Link></li>
         {/* When you make a route for any of the above, swap <a> with <Link>! */}
       </ul>
       <div className="flex items-center gap-4">

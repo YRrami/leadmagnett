@@ -101,8 +101,8 @@ export default function ServicesPage() {
                 </ul>
               </div>
               <div className="mt-auto pt-5 flex">
-                <a
-                  href="/contact"
+                <Link
+                  to="/contact"
                   className="
                     inline-block bg-gold text-black font-bold px-6 py-2 rounded-xl
                     shadow-lg hover:scale-105 hover:brightness-105 transition-all duration-200
@@ -110,7 +110,7 @@ export default function ServicesPage() {
                   "
                 >
                   {service.cta}
-                </a>
+                </Link>
               </div>
             </div>
           ))}
