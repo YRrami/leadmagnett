@@ -48,7 +48,7 @@ const Navbar = () => {
     if (link.to === "/BlogPage") return location.pathname === "/BlogPage";
     if (link.to === "/CasePage") return location.pathname === "/CasePage";
     // For in-page sections, match hash and be on home page
-    if (link.to.startsWith("/#"))
+    if (link.to.startsWith("/"))
       return (
         location.pathname === "/" &&
         location.hash === link.to.replace("/", "")
@@ -840,12 +840,17 @@ const Footer = () => (
             About
           </Link>
         </li>
-        {/* Leave the rest as hash until you add more pages */}
-        <li><Link to="/services" className="hover:text-gold transition">Services</Link></li>
+        
+        <li>
+          <Link to="/services" className="hover:text-gold transition">
+          Services
+          </Link>
+        </li>
+
         <li><Link to="/CasePage" className="hover:text-gold transition">Case Studies</Link></li>
         <li><Link to="/testimonials" className="hover:text-gold transition">Testimonials</Link></li>
         <li><Link to="/BlogPage" className="hover:text-gold transition">Blog</Link></li>
-        {/* When you make a route for any of the above, swap <a> with <Link>! */}
+       
       </ul>
       <div className="flex items-center gap-4">
         <span className="text-white/40 text-xs">&copy; {new Date().getFullYear()} Leads Magnet</span>
