@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* You can add custom CSS for font imports: */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;700&display=swap');
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    .text-gold { color: #FFD700; }
+.bg-gold { background-color: #FFD700; }
+.drop-shadow-gold { filter: drop-shadow(0 4px 24px #FFD70090);}
+  }

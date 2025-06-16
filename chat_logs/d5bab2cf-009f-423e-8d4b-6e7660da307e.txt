@@ -1,0 +1,3 @@
+[2025-06-12 09:11:53] USER: can you speak in english
+[2025-06-12 09:11:53] BOT: Sure,  what's up?  I can switch to English.  What do you need?
+
