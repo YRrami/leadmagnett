@@ -28,7 +28,7 @@ const Logo = ({ size = 45, className = "" }) => (
 const navLinks = [
   { name: "Home", to: "/" },
   { name: "About", to: "/about" },
-  { name: "Services", to: "sServices" },
+  { name: "Services", to: "services" },
   { name: "Case Studies", to: "/CasePage" },
   { name: "Testimonials", to: "/testimonials" },
   { name: "Blog", to: "/BlogPage" },
