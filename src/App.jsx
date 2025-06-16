@@ -856,26 +856,25 @@ const HomePage = () => (
 // This is the root component that sets up the page structure and routing.
 export default function App() {
   return (
-    <Router>
-      <div className="bg-black">
-        <Navbar />
-        <main>
-          <Routes>
-            {/* Route for the homepage */}
-            <Route path="/" element={<HomePage />} />
-            
-            {/* Routes for other pages */}
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/CasePage" element={<CasePage />} />
-            <Route path="/testimonials" element={<Testimonials />} />
-            <Route path="/BlogPage" element={<BlogPage />} />
-            <Route path="/Contact" element={<Contact />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+    // No <Router> here! It should be in your main.jsx or index.js
+    <div className="bg-black">
+      <Navbar />
+      <main>
+        <Routes>
+          {/* Route for the homepage */}
+          <Route path="/" element={<HomePage />} />
+          
+          {/* Routes for other pages */}
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/CasePage" element={<CasePage />} />
+          <Route path="/testimonials" element={<Testimonials />} />
+          <Route path="/BlogPage" element={<BlogPage />} />
+          <Route path="/Contact" element={<Contact />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
   );
 }
 
