@@ -11,14 +11,10 @@ import Contact from "./Contact";
 import logoImg from "./logo.png";
 import { motion, AnimatePresence } from "framer-motion";
 import PartnerBadge from './Partner-CMYK.svg';
-import { BrowserRouter } from 'react-router-dom';
+
 import { Link } from 'react-router-dom';
 // ---------- NAVBAR ----------
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <BrowserRouter> {/* Wrap App in BrowserRouter */}
-    <App />
-  </BrowserRouter>
-);
+
 const Logo = ({ size = 45, className = "" }) => (
   <img
     src={logoImg}
