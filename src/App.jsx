@@ -183,7 +183,7 @@ const Navbar = () => {
           >
             <ul className="bg-black/95 backdrop-blur-2xl rounded-b-3xl shadow-xl border-t border-gold/30 mx-2 pt-6 pb-7 flex flex-col gap-2 text-base sm:text-lg font-semibold text-white" role="menubar">
               {navLinks.map((link) =>
-                (link.to === "/" || link.to === "/about") ? (
+                (link.to === "/" || link.to === "/about" || link.to === "/BlogPage" || link.to === "/CasePage") ? (
                   <li key={link.name} role="none">
                     <Link
                       to={link.to}
