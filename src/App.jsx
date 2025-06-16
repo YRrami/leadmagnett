@@ -28,7 +28,7 @@ const Logo = ({ size = 45, className = "" }) => (
 const navLinks = [
   { name: "Home", to: "/" },
   { name: "About", to: "/about" },
-  { name: "Services", to: "/services" },
+  { name: "Services", to: "/Services" },
   { name: "Case Studies", to: "/CasePage" },
   { name: "Testimonials", to: "/testimonials" },
   { name: "Blog", to: "/BlogPage" },
@@ -43,7 +43,7 @@ const Navbar = () => {
   const isActive = (link) => {
     if (link.to === "/") return location.pathname === "/" && !location.hash;
     if (link.to === "/about") return location.pathname === "/about";
-    if (link.to === "/services") return location.pathname === "/services";
+    if (link.to === "/Services") return location.pathname === "/Services";
     if (link.to === "/testimonials") return location.pathname === "/testimonials";
     if (link.to === "/BlogPage") return location.pathname === "/BlogPage";
     if (link.to === "/CasePage") return location.pathname === "/CasePage";
@@ -94,7 +94,7 @@ const Navbar = () => {
         {/* Desktop Nav */}
         <ul className="hidden xl:flex gap-2 sm:gap-4 lg:gap-7 items-center h-14" role="menubar">
           {navLinks.map((link) =>
-             (link.to === "/" || link.to === "/about" || link.to === "/BlogPage" || link.to === "/CasePage" || link.to === "/testimonials"|| link.to === "/services"|| link.to === "/Contact") ? (
+             (link.to === "/" || link.to === "/about" || link.to === "/BlogPage" || link.to === "/CasePage" || link.to === "/testimonials"|| link.to === "/Services"|| link.to === "/Contact") ? (
               <li key={link.name} role="none">
                 <Link
                   to={link.to}
@@ -842,7 +842,7 @@ const Footer = () => (
         </li>
         
         <li>
-          <Link to="/services" className="hover:text-gold transition">
+          <Link to="/Services" className="hover:text-gold transition">
           Services
           </Link>
           </li>
@@ -900,7 +900,7 @@ export default function App() {
           }
         />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/services" element={<ServicesPage />} />
+        <Route path="/Services" element={<ServicesPage />} />
         <Route path="/testimonials" element={<Testimonials />} />
         {/* To add more pages: */}
         {/* <Route path="/services" element={<ServicesPage />} /> */}
