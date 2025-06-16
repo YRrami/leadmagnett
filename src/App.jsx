@@ -282,8 +282,8 @@ const Hero = () => (
           We drive real ROI through lead generation, eCommerce ads,<br className="hidden sm:block" />
           and guaranteed SEO — no fluff.
         </h2>
-        <a
-          href="/Contact"
+        <Link
+          to="/Contact"
           className="
             bg-gold text-black font-bold px-7 sm:px-10 py-3 sm:py-4 rounded-2xl text-base sm:text-lg shadow-lg
             transition-all duration-200 animate-fadeInUp mb-5 sm:mb-7
@@ -296,7 +296,7 @@ const Hero = () => (
         >
           <span className="relative z-10">Get Your Free Audit</span>
           <span className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 hover:opacity-60 transition-opacity duration-300 bg-gold blur-lg z-0" />
-        </a>
+        </Link>
       </div>
       {/* --- RIGHT: LOTTIE ANIMATION --- */}
       <div className="flex-1 w-full flex justify-center items-center">
