@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import Lottie from "lottie-react";
 import heroAnim from "./hero-anim.json";
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import AboutPage from "./About";
 import ServicesPage from "./Services";
 import CasePage from "./CasePage";
@@ -28,7 +29,7 @@ const Logo = ({ size = 45, className = "" }) => (
 const navLinks = [
   { name: "Home", to: "/" },
   { name: "About", to: "/about" },
-  { name: "Services", to: "/Services" },
+  { name: "Services", to: "/services" },
   { name: "Case Studies", to: "/CasePage" },
   { name: "Testimonials", to: "/testimonials" },
   { name: "Blog", to: "/BlogPage" },
@@ -39,21 +40,9 @@ const Navbar = () => {
   const location = useLocation();
   const [menuOpen, setMenuOpen] = React.useState(false);
 
-  // Determines active nav based on path/hash
+  // Determines active nav based on path
   const isActive = (link) => {
-    if (link.to === "/") return location.pathname === "/" && !location.hash;
-    if (link.to === "/about") return location.pathname === "/about";
-    if (link.to === "/Services") return location.pathname === "/Services";
-    if (link.to === "/testimonials") return location.pathname === "/testimonials";
-    if (link.to === "/BlogPage") return location.pathname === "/BlogPage";
-    if (link.to === "/CasePage") return location.pathname === "/CasePage";
-    // For in-page sections, match hash and be on home page
-    if (link.to.startsWith("/#"))
-      return (
-        location.pathname === "/" &&
-        location.hash === link.to.replace("/", "")
-      );
-    return false;
+    return location.pathname === link.to;
   };
 
   // For mobile menu: close on nav
@@ -93,50 +82,29 @@ const Navbar = () => {
         </div>
         {/* Desktop Nav */}
         <ul className="hidden xl:flex gap-2 sm:gap-4 lg:gap-7 items-center h-14" role="menubar">
-          {navLinks.map((link) =>
-             (link.to === "/" || link.to === "/about" || link.to === "/BlogPage" || link.to === "/CasePage" || link.to === "/testimonials"|| link.to === "/Services"|| link.to === "/Contact") ? (
-              <li key={link.name} role="none">
-                <Link
-                  to={link.to}
-                  className={`
-                    group relative px-2 md:px-3 py-2 rounded-lg
-                    font-medium text-base
-                    focus:outline-gold transition-all
-                    ${isActive(link) ? "text-gold font-bold" : "text-white hover:text-gold"}
-                  `}
-                  onClick={handleMobileNav}
-                >
-                  <span>{link.name}</span>
-                  <span className={`
-                    absolute left-1/2 -translate-x-1/2 -bottom-1 h-[3px] w-0 rounded-full bg-gold transition-all duration-300 ease-in
-                    ${isActive(link) ? "w-3/4" : "group-hover:w-2/3"}
-                  `} />
-                </Link>
-              </li>
-            ) : (
-              <li key={link.name} role="none">
-                <a
-                  href={link.to.replace("/", "")}
-                  className={`
-                    group relative px-2 md:px-3 py-2 rounded-lg
-                    font-medium text-base
-                    focus:outline-gold transition-all
-                    ${isActive(link) ? "text-gold font-bold" : "text-white hover:text-gold"}
-                  `}
-                  onClick={handleMobileNav}
-                >
-                  <span>{link.name}</span>
-                  <span className={`
-                    absolute left-1/2 -translate-x-1/2 -bottom-1 h-[3px] w-0 rounded-full bg-gold transition-all duration-300 ease-in
-                    ${isActive(link) ? "w-3/4" : "group-hover:w-2/3"}
-                  `} />
-                </a>
-              </li>
-            )
-          )}
+          {navLinks.map((link) => (
+            <li key={link.name} role="none">
+              <a
+                href={link.to}
+                className={`
+                  group relative px-2 md:px-3 py-2 rounded-lg
+                  font-medium text-base
+                  focus:outline-gold transition-all
+                  ${isActive(link) ? "text-gold font-bold" : "text-white hover:text-gold"}
+                `}
+                onClick={handleMobileNav}
+              >
+                <span>{link.name}</span>
+                <span className={`
+                  absolute left-1/2 -translate-x-1/2 -bottom-1 h-[3px] w-0 rounded-full bg-gold transition-all duration-300 ease-in
+                  ${isActive(link) ? "w-3/4" : "group-hover:w-2/3"}
+                `} />
+              </a>
+            </li>
+          ))}
           <li role="none">
-            <Link
-              to="/Contact"
+            <a
+              href="/Contact"
               className="ml-1 xl:ml-3 bg-gold text-black font-bold px-4 py-2 rounded-2xl
                 transition shadow-md border border-gold/0
                 hover:brightness-110
@@ -149,7 +117,7 @@ const Navbar = () => {
             >
               <span className="relative z-10">Get Your Free Audit</span>
               <span className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 hover:opacity-60 transition-opacity duration-300 bg-gold blur-lg z-0" />
-            </Link>
+            </a>
           </li>
         </ul>
         {/* Hamburger/X for Mobile */}
@@ -185,50 +153,29 @@ const Navbar = () => {
             `}
           >
             <ul className="bg-black/95 backdrop-blur-2xl rounded-b-3xl shadow-xl border-t border-gold/30 mx-2 pt-6 pb-7 flex flex-col gap-2 text-base sm:text-lg font-semibold text-white" role="menubar">
-              {navLinks.map((link) =>
-                (link.to === "/" || link.to === "/about" || link.to === "/BlogPage" || link.to === "/CasePage" || link.to === "/testimonials"|| link.to === "/services"|| link.to === "/Contact") ? (
-                  <li key={link.name} role="none">
-                    <Link
-                      to={link.to}
-                      className={`
-                        block px-4 sm:px-6 py-3 rounded-xl
-                        focus:outline-gold
-                        ${isActive(link) ? "text-gold font-bold" : "text-white hover:text-gold"}
-                        relative transition-all
-                      `}
-                      onClick={handleMobileNav}
-                    >
-                      <span>{link.name}</span>
-                      <span className={`
-                        absolute left-1/2 -translate-x-1/2 -bottom-1 h-[3px] w-0 rounded-full bg-gold transition-all duration-300 ease-in
-                        ${isActive(link) ? "w-3/4" : ""}
-                      `} />
-                    </Link>
-                  </li>
-                ) : (
-                  <li key={link.name} role="none">
-                    <a
-                      href={link.to.replace("/", "")}
-                      className={`
-                        block px-4 sm:px-6 py-3 rounded-xl
-                        focus:outline-gold
-                        ${isActive(link) ? "text-gold font-bold" : "text-white hover:text-gold"}
-                        relative transition-all
-                      `}
-                      onClick={handleMobileNav}
-                    >
-                      <span>{link.name}</span>
-                      <span className={`
-                        absolute left-1/2 -translate-x-1/2 -bottom-1 h-[3px] w-0 rounded-full bg-gold transition-all duration-300 ease-in
-                        ${isActive(link) ? "w-3/4" : ""}
-                      `} />
-                    </a>
-                  </li>
-                )
-              )}
+              {navLinks.map((link) => (
+                <li key={link.name} role="none">
+                  <a
+                    href={link.to}
+                    className={`
+                      block px-4 sm:px-6 py-3 rounded-xl
+                      focus:outline-gold
+                      ${isActive(link) ? "text-gold font-bold" : "text-white hover:text-gold"}
+                      relative transition-all
+                    `}
+                    onClick={handleMobileNav}
+                  >
+                    <span>{link.name}</span>
+                    <span className={`
+                      absolute left-1/2 -translate-x-1/2 -bottom-1 h-[3px] w-0 rounded-full bg-gold transition-all duration-300 ease-in
+                      ${isActive(link) ? "w-3/4" : ""}
+                    `} />
+                  </a>
+                </li>
+              ))}
               <li className="mt-3" role="none">
-                <Link
-                  to="/Contact"
+                <a
+                  href="/Contact"
                   className="block bg-gold text-black font-bold px-4 sm:px-6 py-3 rounded-2xl
                     hover:brightness-110 hover:shadow-[0_0_16px_4px_rgba(255,215,0,0.65)]
                     relative overflow-hidden text-center text-base sm:text-lg transition focus:outline-gold
@@ -238,7 +185,7 @@ const Navbar = () => {
                 >
                   <span className="relative z-10">Get Your Free Audit</span>
                   <span className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 hover:opacity-60 transition-opacity duration-300 bg-gold blur-lg z-0" />
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -282,8 +229,8 @@ const Hero = () => (
           We drive real ROI through lead generation, eCommerce ads,<br className="hidden sm:block" />
           and guaranteed SEO — no fluff.
         </h2>
-        <Link
-          to="/Contact"
+        <a
+          href="/Contact"
           className="
             bg-gold text-black font-bold px-7 sm:px-10 py-3 sm:py-4 rounded-2xl text-base sm:text-lg shadow-lg
             transition-all duration-200 animate-fadeInUp mb-5 sm:mb-7
@@ -296,7 +243,7 @@ const Hero = () => (
         >
           <span className="relative z-10">Get Your Free Audit</span>
           <span className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 hover:opacity-60 transition-opacity duration-300 bg-gold blur-lg z-0" />
-        </Link>
+        </a>
       </div>
       {/* --- RIGHT: LOTTIE ANIMATION --- */}
       <div className="flex-1 w-full flex justify-center items-center">
@@ -767,8 +714,10 @@ export function TestimonialsCarousel() {
             {testimonials.map((_, i) => (
               <span
                 key={i}
-                className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-200 ${current === i ? "bg-gold scale-125 shadow-gold" : "bg-gold/30"}`}
-                style={{ boxShadow: current === i ? `0 0 8px 1px ${GOLD}90` : undefined }}
+                onClick={() => setCurrent(i)}
+                className={`w-3 h-3 rounded-full transition-all duration-200 cursor-pointer
+                  ${current === i ? "bg-gold scale-125" : "bg-gold/40 hover:bg-gold/70"}
+                `}
               />
             ))}
           </div>
@@ -782,134 +731,152 @@ export function TestimonialsCarousel() {
           </button>
         </div>
       </div>
-      {/* Neon Pulse Animation */}
       <style>{`
-        .shadow-gold { box-shadow: 0 0 10px 1px #FFD70099; }
         @keyframes pulseNeon {
-          0%,100% { box-shadow: 0 0 0 3px #222, 0 0 16px 6px #FFD70088, 0 0 44px 9px #FFD70033; }
-          40% { box-shadow: 0 0 0 4px #FFD700AA, 0 0 34px 14px #FFD70055, 0 0 74px 18px #FFD70022;}
-          70% { box-shadow: 0 0 0 3px #FFD70088, 0 0 16px 8px #FFD70077, 0 0 44px 13px #FFD70033;}
+          0%,100% {
+            box-shadow: 0 0 0 3px #222, 0 0 16px 6px #FFD70077, 0 0 44px 9px #FFD70033;
+          }
+          55% {
+            box-shadow: 0 0 0 3px #222, 0 0 24px 8px #FFD700, 0 0 55px 12px #FFD70055;
+          }
         }
       `}</style>
     </section>
   );
 }
-// ---------- CTA STRIP ----------
-const CTAStrip = () => (
-  <section className="relative py-14 px-4 bg-black">
-    <div className="bg-gradient-to-r from-gold/90 to-gold/70 rounded-3xl shadow-2xl flex flex-col sm:flex-row items-center justify-between px-8 py-10 gap-7 sm:gap-0 animate-fadeInUp">
-      <div className="text-2xl sm:text-3xl font-black text-black tracking-tight">
-        Let’s build a campaign that performs.
-      </div>
-      <Link
-        to="/Contact"
-        className="mt-4 sm:mt-0 bg-black text-gold font-bold px-10 py-4 rounded-2xl text-lg shadow-lg hover:scale-105 hover:brightness-110 hover:shadow-gold/40 transition-all duration-200 pulse-gold"
-        aria-label="Claim Your Free Audit"
-      >
-        Claim Your Free Audit
-      </Link>
+
+const CTA = () => (
+  <section className="relative py-20 px-4 bg-gradient-to-t from-black via-zinc-900/95 to-black text-center overflow-hidden">
+    {/* Background Glow */}
+    <div className="absolute inset-0 z-0 pointer-events-none">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-48 bg-gold/20 blur-3xl rounded-full animate-pulse-slow" />
     </div>
-    <style>{`
-      .pulse-gold {
-        animation: pulseGold 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-      }
-      @keyframes pulseGold {
-        0%, 100% { box-shadow: 0 0 0 0 rgba(255,215,0,0.18);}
-        50% { box-shadow: 0 0 24px 4px rgba(255,215,0,0.35);}
-      }
-    `}</style>
+    <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
+      <h3 className="text-3xl sm:text-4xl font-extrabold text-gold drop-shadow-gold mb-4 animate-fadeInUp">
+        Ready to Grow Your Business?
+      </h3>
+      <p className="text-base sm:text-lg text-white/80 mb-8 animate-fadeInUp" style={{ animationDelay: '0.1s' }}>
+        Stop wasting money on campaigns that don’t deliver. Let's build a strategy that brings you guaranteed results and a real return on your investment.
+      </p>
+      <a
+        href="/Contact"
+        className="
+          bg-gold text-black font-bold px-8 sm:px-12 py-3 sm:py-4 rounded-2xl text-lg sm:text-xl shadow-lg
+          transition-all duration-200 animate-fadeInUp
+          hover:scale-105 hover:brightness-110
+          hover:shadow-[0_0_24px_6px_rgba(255,215,0,0.8)]
+          relative overflow-hidden
+        "
+        style={{ animationDelay: "0.2s" }}
+        aria-label="Get Your Free Audit"
+      >
+        <span className="relative z-10">Get Your Free Audit</span>
+        <span className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 hover:opacity-60 transition-opacity duration-300 bg-gold blur-lg z-0" />
+      </a>
+    </div>
   </section>
 );
+
+
 // ---------- FOOTER ----------
-const Footer = () => (
-  <footer className="relative z-10 w-full bg-black backdrop-blur-xl border-t border-gold/20 py-8 px-4 mt-12">
-    <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-6">
-      <div className="flex items-center gap-2">
-        <Logo />
-        <span
-          className="text-gold font-bold text-lg tracking-wider"
-          style={{ fontFamily: "'Cormorant Garamond', serif" }}
-        >
-          LEADS MAGNET
-        </span>
-      </div>
-      <ul className="flex gap-5 flex-wrap text-white/70 font-medium text-sm">
-        <li>
-          {/* <a href="#about" ...> to actual /about */}
-          <Link to="/about" className="hover:text-gold transition">
-            About
-          </Link>
-        </li>
-        
-        <li>
-          <Link to="/Services" className="hover:text-gold transition">
-          Services
-          </Link>
-          </li>
-        <li><Link to="/CasePage" className="hover:text-gold transition">Case Studies</Link></li>
-        <li><Link to="/testimonials" className="hover:text-gold transition">Testimonials</Link></li>
-        <li><Link to="/BlogPage" className="hover:text-gold transition">Blog</Link></li>
-       
-      </ul>
-      <div className="flex items-center gap-4">
-        <span className="text-white/40 text-xs">&copy; {new Date().getFullYear()} Leads Magnet</span>
-        <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" className="hover:text-gold text-white/50 transition" aria-label="Twitter">
-          <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M20.94 7.17c.01.15.01.31.01.46 0 4.67-3.56 10.06-10.06 10.06-2 .01-3.98-.57-5.65-1.67.29.04.57.06.87.06 1.65 0 3.18-.56 4.41-1.5-1.54-.03-2.84-1.05-3.29-2.45.21.04.42.06.65.06.31 0 .61-.04.89-.12-1.61-.32-2.83-1.74-2.83-3.45v-.04c.47.26 1.01.42 1.58.44-.94-.63-1.56-1.7-1.56-2.91 0-.64.17-1.25.46-1.77 1.67 2.05 4.18 3.4 7 3.54-.06-.25-.09-.5-.09-.76 0-1.86 1.51-3.38 3.37-3.38.97 0 1.84.41 2.45 1.07.77-.15 1.5-.43 2.16-.81-.25.79-.79 1.46-1.49 1.88.68-.08 1.33-.26 1.93-.54-.45.67-1 1.25-1.65 1.71z"></path></svg>
-        </a>
-        <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" className="hover:text-gold text-white/50 transition" aria-label="LinkedIn">
-          <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M4.98 3.5C3.33 3.5 2 4.82 2 6.48s1.32 2.98 2.98 2.98h.02c1.66 0 2.98-1.32 2.98-2.98S6.65 3.5 4.98 3.5zM2.4 20.5h5.16V9.5H2.4v11zm7.86 0h5.17v-5.52c0-1.32.02-3.01-1.84-3.01-1.84 0-2.12 1.44-2.12 2.93V20.5h5.17v-6.14c0-2.93-1.55-4.29-3.61-4.29-1.64 0-2.39.91-2.8 1.55h.02v-1.33H10.3c.07.86 0 11 0 11z"></path></svg>
-        </a>
-      </div>
-    </div>
-  </footer>
+const Footer = () => {
+    const socialLinks = [
+        { name: "Facebook", href: "#" },
+        { name: "LinkedIn", href: "#" },
+        { name: "Twitter", href: "#" },
+    ];
+
+    const footerNav = [
+        { name: "Privacy Policy", href: "#" },
+        { name: "Terms of Service", href: "#" },
+    ];
+
+    return (
+        <footer className="bg-black border-t-2 border-gold/20 text-white/60 font-poppins">
+            <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+                <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+                    {/* Brand Info */}
+                    <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                        <div className="flex items-center gap-3 mb-2">
+                             <Logo size={40} />
+                             <span className="text-gold uppercase tracking-wider text-lg" style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 900 }}>
+                                LEADS MAGNET
+                             </span>
+                        </div>
+                        <p className="text-sm max-w-xs">
+                            Driving guaranteed results through performance-based digital marketing.
+                        </p>
+                    </div>
+
+                    {/* Footer Navigation */}
+                    <div className="flex gap-6">
+                        {footerNav.map(link => (
+                            <a key={link.name} href={link.href} className="text-sm hover:text-gold transition-colors">
+                                {link.name}
+                            </a>
+                        ))}
+                    </div>
+
+                    {/* Social Links */}
+                    <div className="flex gap-5">
+                        {socialLinks.map(social => (
+                            <a key={social.name} href={social.href} aria-label={social.name} className="hover:text-gold transition-colors hover:scale-110">
+                                {/* Replace with actual icons */}
+                                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                    {/* Placeholder Icon */}
+                                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                                </svg>
+                            </a>
+                        ))}
+                    </div>
+                </div>
+                <div className="mt-8 border-t border-white/10 pt-6 text-center text-xs">
+                    <p>&copy; {new Date().getFullYear()} Leads Magnet. All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+    );
+};
+
+// ---------- HOME PAGE LAYOUT ----------
+// This component wraps all the sections for the main page.
+const HomePage = () => (
+    <>
+        <Hero />
+        <WhyChooseUs />
+        <ServicesSnapshot />
+        <ClientResults />
+        <TestimonialsCarousel />
+        <CTA />
+    </>
 );
 
-// ---------- EXTRA ANIM STYLES ----------
-const ExtraStyles = () => (
-  <style>{`
-    @keyframes fadeInUp {
-      0% { opacity: 0; transform: translateY(40px);}
-      100% { opacity: 1; transform: translateY(0);}
-    }
-    .animate-fadeInUp {
-      animation: fadeInUp 0.8s cubic-bezier(0.16,1,0.3,1) both;
-    }
-    .drop-shadow-gold {
-      filter: drop-shadow(0 2px 8px #FFD70066);
-    }
-  `}</style>
-);
 
-// ---------- APP ----------
+// ---------- MAIN APP COMPONENT ----------
+// This is the root component that sets up the page structure and routing.
 export default function App() {
   return (
-    <>
-      <Navbar />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Hero />
-              <WhyChooseUs />
-              <ServicesSnapshot />
-              <ClientResults />
-              <TestimonialsCarousel />
-              <CTAStrip />
-            </>
-          }
-        />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/Services" element={<ServicesPage />} />
-        <Route path="/testimonials" element={<Testimonials />} />
-        {/* To add more pages: */}
-        {/* <Route path="/services" element={<ServicesPage />} /> */}
-        <Route path="/CasePage" element={<CasePage />}/>
-        <Route path="/Contact" element={<Contact />} /> 
-        <Route path="/BlogPage" element={<BlogPage />} /> 
-      </Routes>
-      <Footer />
-      <ExtraStyles />
-    </>
+    <Router>
+      <div className="bg-black">
+        <Navbar />
+        <main>
+          <Routes>
+            {/* Route for the homepage */}
+            <Route path="/" element={<HomePage />} />
+            
+            {/* Routes for other pages */}
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/CasePage" element={<CasePage />} />
+            <Route path="/testimonials" element={<Testimonials />} />
+            <Route path="/BlogPage" element={<BlogPage />} />
+            <Route path="/Contact" element={<Contact />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
   );
 }
+
+
