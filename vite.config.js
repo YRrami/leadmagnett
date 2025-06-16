@@ -9,4 +9,5 @@ export default defineConfig({
   build: {
     outDir: 'dist', // Directory where the build will be output
   },
+  base: '/', // Make sure this is '/' if you're deploying to the root path
 });
