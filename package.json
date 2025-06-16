@@ -2,12 +2,12 @@
   "name": "nokat-chat-ui",
   "version": "1.0.0",
   "scripts": {
-    "dev": "vite", 
+    "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "emailjs-com": "^3.2.0",
+    "@emailjs/browser": "^4.4.1",
     "framer-motion": "^11.18.2",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.367.0",
@@ -29,6 +29,6 @@
     "vite": "^5.0.0"
   },
   "engines": {
-    "node": "20.x"
+    "node": "18.x"
   }
 }
