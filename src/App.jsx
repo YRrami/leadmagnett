@@ -12,7 +12,7 @@ import logoImg from "./logo.png";
 import { motion, AnimatePresence } from "framer-motion";
 import PartnerBadge from './Partner-CMYK.svg';
 
-import { Link } from 'react-router-dom';
+
 // ---------- NAVBAR ----------
 
 const Logo = ({ size = 45, className = "" }) => (
