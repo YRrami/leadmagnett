@@ -293,7 +293,7 @@ const whyChooseItems = [
   {
     label: "Google Partner Certified",
     badge: PartnerBadge, // Or use import as mentioned before
-    link: "https://partnersdirectory.withgoogle.com/",
+    link: "https://www.google.com/partners/agency?id=2595684232",
     desc: "Your campaigns are handled by certified pros.",
   },
   { label: "ROI & ROAS Focused", icon: "💹", desc: "We maximize your budget for real profit—not just clicks." },
