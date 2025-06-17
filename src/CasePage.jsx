@@ -44,7 +44,7 @@ export default function CasePage() {
       {/* HERO */}
       <section className="max-w-3xl mx-auto px-5 flex flex-col items-center text-center mb-20 pt-36 sm:pt-40">
         {/* ↑↑↑ Here is the increased padding-top (pt-36 or sm:pt-40) */}
-        <span className="text-xs tracking-widest font-semibold uppercase bg-[#FFD700] text-black px-4 py-1 rounded-full mb-5 shadow-sm">
+        <span className="bg-gold text-black font-bold px-7 py-2 rounded-full text-sm tracking-widest mb-6 shadow-md">
           CASE STUDIES
         </span>
         <h1 className="text-4xl sm:text-5xl font-extrabold text-gold mb-4 leading-tight sm:leading-snug" style={{ letterSpacing: "-1px" }}>
@@ -96,8 +96,8 @@ export default function CasePage() {
               </div>
             </div>
             <div className="flex-grow" />
-            <Link
-              href="/Contact"
+            <a
+              href="#cta"
               className="
                 mt-6 w-full
                 relative
@@ -118,7 +118,7 @@ export default function CasePage() {
             >
               <span className="relative z-10">Want results like this? Get a Free Audit</span>
               <FaArrowRight className="relative z-10 text-lg group-hover:translate-x-1 transition-transform" />
-            </Link>
+            </a>
           </div>
         ))}
       </section>

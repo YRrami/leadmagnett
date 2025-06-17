@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import emailjs from '@emailjs/browser';
 
 // Sample form handling and data storage
 export default function ContactPage() {
