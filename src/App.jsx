@@ -288,14 +288,18 @@ const Hero = () => (
 // ---------- WHY CHOOSE US SECTION ----------
 
 
-// Sample data
+// Sample data (update as before)
 const whyChooseItems = [
-  { label: "Google Partner Certified", badge: "/mnt/data/Partner-CMYK.svg", desc: "Your campaigns are handled by certified pros." },
+  {
+    label: "Google Partner Certified",
+    badge: PartnerBadge, // Or use import as mentioned before
+    link: "https://partnersdirectory.withgoogle.com/",
+    desc: "Your campaigns are handled by certified pros.",
+  },
   { label: "ROI & ROAS Focused", icon: "💹", desc: "We maximize your budget for real profit—not just clicks." },
   { label: "SEO Guarantee", icon: "🛡️", desc: "If we don’t deliver, you don’t pay—simple." },
   { label: "Full Transparency", icon: "🔍", desc: "You see every move, every stat, all in real time." }
 ];
-
 
 const WhyChooseUs = () => (
   <section className="relative py-20 px-4 bg-black backdrop-blur-xl" id="why-us">
@@ -307,19 +311,34 @@ const WhyChooseUs = () => (
         {whyChooseItems.map((item) => (
           <div
             key={item.label}
-            className="flex items-start gap-4 bg-black/60 border border-gold/15 rounded-2xl py-7 px-7 shadow-lg hover:scale-[1.035] hover:shadow-[0_0_24px_4px_rgba(255,215,0,0.13)] transition-all duration-200 backdrop-blur-md"
+            className="flex items-center gap-5 bg-black/60 border border-gold/15 rounded-2xl py-7 px-7 shadow-lg hover:scale-[1.035] hover:shadow-[0_0_24px_4px_rgba(255,215,0,0.13)] transition-all duration-200 backdrop-blur-md"
           >
-            {/* Google Partner Badge - Circular and Zoomed */}
-            {item.label === "Google Partner Certified" && (
-              <div className="w-35 h-16 rounded-full overflow-hidden bg-black/10 relative">
+            {/* Badge or Icon */}
+            {item.badge && item.link ? (
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-15 h-15 min-w-[64px] min-h-[64px] rounded-full overflow-hidden bg-white flex items-center justify-center shadow-lg border-2 border-gold/40  relative"
+                aria-label="Google Partner - Visit Site"
+                style={{
+                  boxShadow: "0 0 0 5px #FFD70044, 0 2px 18px #FFD70022",
+                }}
+              >
+                {/* ZOOMED Badge Image */}
                 <img
-                  src={PartnerBadge}
+                  src={item.badge}
                   alt="Google Partner Certified"
-                  className="object-cover w-full h-full transform scale-110 transition-transform duration-300 ease-in-out"
+                  className="absolute left-1/2 top-1/2 w-24 h-24 object-contain -translate-x-1/2 -translate-y-1/2 scale-125"
+                  style={{
+                    pointerEvents: 'none', // Keeps click on <a>
+                  }}
                 />
-              </div>
-            )}
-            <span className="text-3xl bg-gold/25 rounded-full p-3">{item.icon}</span>
+              </a>
+            ) : item.icon ? (
+              <span className="text-3xl bg-gold/25 rounded-full p-3">{item.icon}</span>
+            ) : null}
+            {/* Text Content */}
             <div>
               <div className="text-lg font-bold text-gold mb-1">{item.label}</div>
               <div className="text-white/80 text-sm">{item.desc}</div>
@@ -754,9 +773,10 @@ const CTAStrip = () => (
 // ---------- FOOTER ----------
 const Footer = () => (
   <footer className="relative z-10 w-full bg-black backdrop-blur-xl border-t border-gold/20 py-8 px-4 mt-12">
-    <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-6">
-      <div className="flex items-center gap-2">
-        <Logo />
+    <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:justify-between sm:items-center gap-8 sm:gap-6">
+      {/* Logo & Brand */}
+      <div className="flex flex-col sm:flex-row items-center gap-2">
+        <Logo size={36} />
         <span
           className="text-gold font-bold text-lg tracking-wider"
           style={{ fontFamily: "'Cormorant Garamond', serif" }}
@@ -764,21 +784,34 @@ const Footer = () => (
           LEADS MAGNET
         </span>
       </div>
-      <ul className="flex gap-5 flex-wrap text-white/70 font-medium text-sm">
+      {/* Nav Links */}
+      <ul className="
+        flex flex-wrap justify-center
+        gap-4 md:gap-5
+        text-white/70 font-medium text-sm
+        px-1
+      ">
         <li><a href="/about" className="hover:text-gold transition">About</a></li>
         <li><a href="/services" className="hover:text-gold transition">Services</a></li>
         <li><a href="/CasePage" className="hover:text-gold transition">Case Studies</a></li>
         <li><a href="/testimonials" className="hover:text-gold transition">Testimonials</a></li>
         <li><a href="/BlogPage" className="hover:text-gold transition">Blog</a></li>
       </ul>
-      <div className="flex items-center gap-4">
-        <span className="text-white/40 text-xs">&copy; {new Date().getFullYear()} Leads Magnet</span>
-        <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" className="hover:text-gold text-white/50 transition" aria-label="Twitter">
-          {/* SVG ICON */}
-        </a>
-        <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" className="hover:text-gold text-white/50 transition" aria-label="LinkedIn">
-          {/* SVG ICON */}
-        </a>
+      {/* Social & Copyright */}
+      <div className="flex flex-col-reverse sm:flex-row items-center gap-3 sm:gap-4">
+        <span className="text-white/40 text-xs">
+          &copy; {new Date().getFullYear()} Leads Magnet
+        </span>
+        <div className="flex gap-2">
+          <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" className="hover:text-gold text-white/50 transition" aria-label="Twitter">
+            {/* Twitter SVG */}
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M18 6.1c.01.15.01.31.01.46 0 4.68-3.53 10.08-10.01 10.08-1.98 0-3.83-.58-5.39-1.57a7.16 7.16 0 0 0 5.18-1.45 3.54 3.54 0 0 1-3.3-2.46c.22.03.45.06.7.06.33 0 .66-.04.97-.13a3.54 3.54 0 0 1-2.83-3.47v-.05c.47.26 1 .41 1.56.43a3.55 3.55 0 0 1-1.58-2.96c0-.65.17-1.26.46-1.78A10.05 10.05 0 0 0 9.83 7.1c-.06-.15-.09-.31-.09-.48 0-1.16.94-2.1 2.1-2.1.6 0 1.14.25 1.52.66A7.16 7.16 0 0 0 17.5 4.7c-.18.52-.52.97-.99 1.25A4.2 4.2 0 0 0 18 6.1z"/></svg>
+          </a>
+          <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" className="hover:text-gold text-white/50 transition" aria-label="LinkedIn">
+            {/* LinkedIn SVG */}
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M17.6 17.6h-2.65V13c0-1.09-.02-2.49-1.52-2.49-1.52 0-1.75 1.19-1.75 2.41v4.68H9.04V7.5h2.54v1.38h.04c.35-.66 1.21-1.35 2.48-1.35 2.65 0 3.14 1.74 3.14 4.01v6.06zM5.34 6.11a1.54 1.54 0 1 1 0-3.09 1.54 1.54 0 0 1 0 3.09zM6.68 17.6H3.99V7.5h2.69v10.1zM18.88 0H1.1C.49 0 0 .48 0 1.08v17.84C0 19.51.48 20 1.09 20h17.79c.6 0 1.09-.49 1.09-1.08V1.08C20 .48 19.51 0 18.91 0z"/></svg>
+          </a>
+        </div>
       </div>
     </div>
   </footer>

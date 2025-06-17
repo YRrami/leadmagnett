@@ -63,7 +63,7 @@ export default function BlogPage() {
             <h3 className="text-2xl font-extrabold text-[#FFD700] mb-3">{post.title}</h3>
             <p className="text-white/90 mb-4">{post.excerpt}</p>
             <a
-              href="#cta"
+              href="/Contact"
               className="flex items-center justify-between text-gold font-bold text-base py-2 px-6 bg-black/80 rounded-xl border-2 border-gold/40 transition-all duration-200 hover:bg-gold hover:text-black"
             >
               Need help with this? Book your free audit

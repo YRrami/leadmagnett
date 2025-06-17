@@ -102,7 +102,7 @@ export default function ServicesPage() {
               </div>
               <div className="mt-auto pt-5 flex">
                 <a
-                  href="/contact"
+                  href="/Contact"
                   className="
                     inline-block bg-gold text-black font-bold px-6 py-2 rounded-xl
                     shadow-lg hover:scale-105 hover:brightness-105 transition-all duration-200
