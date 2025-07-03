@@ -5,38 +5,39 @@ import heroAnim from "./hero-anim.json";
 import logoImg from "./logo.png";
 import { motion, AnimatePresence } from "framer-motion";
 import PartnerBadge from './Partner-CMYK.svg';
-
 // --------- PAGE COMPONENTS (IMPORT YOURS) ---------
 import AboutPage from "./About";
 import ServicesPage from "./Services";
 import CasePage from "./CasePage";
-import Testimonials from "./testimonials";
+// import Testimonials from "./testimonials";
 import BlogPage from "./BlogPage";
 import Contact from "./Contact";
+import Contacta from "./Contacta";
 
 // ---------- NAVBAR ----------
 const Logo = ({ size = 45, className = "" }) => (
-  <img
+  <a href="/"><img
     src={logoImg}
     alt="Leads Magnet Logo"
     width={size}
     height={size}
     className={`object-contain ${className}`}
     style={{ borderRadius: 12 }}
-  />
+  /></a>
 );
 
 const navLinks = [
   { name: "Home", to: "/" },
-  { name: "About", to: "/about" },
+  { name: "About Us", to: "/about" },
   { name: "Services", to: "/services" },
   { name: "Case Studies", to: "/CasePage" },
-  { name: "Testimonials", to: "/testimonials" },
+  // { name: "Testimonials", to: "/testimonials" },
   { name: "Blog", to: "/BlogPage" },
+   { name: "Contact", to: "/Contacta" } // If you want a direct link to contact
 ];
 
 // --- NAVBAR COMPONENT ---
-const Navbar = () => {
+const Navbar = ({ onOpenContact }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const handleMobileNav = () => setMenuOpen(false);
 
@@ -69,7 +70,7 @@ const Navbar = () => {
               lineHeight: 1.05,
             }}
           >
-            LEADS MAGNET
+            <a href="/">LEADS MAGNET</a>
           </span>
         </div>
         {/* Desktop Nav */}
@@ -95,8 +96,9 @@ const Navbar = () => {
             </li>
           ))}
           <li role="none">
-            <a
-              href="/Contact"
+            <button
+              type="button"
+              onClick={onOpenContact}
               className="ml-1 xl:ml-3 bg-gold text-black font-bold px-4 py-2 rounded-2xl
                 transition shadow-md border border-gold/0
                 hover:brightness-110
@@ -109,7 +111,7 @@ const Navbar = () => {
             >
               <span className="relative z-10">Get Your Free Audit</span>
               <span className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 hover:opacity-60 transition-opacity duration-300 bg-gold blur-lg z-0" />
-            </a>
+            </button>
           </li>
         </ul>
         {/* Hamburger/X for Mobile */}
@@ -165,18 +167,18 @@ const Navbar = () => {
                 </li>
               ))}
               <li className="mt-3" role="none">
-                <a
-                  href="/Contact"
+                <button
+                  type="button"
+                  onClick={onOpenContact}
                   className="block bg-gold text-black font-bold px-4 sm:px-6 py-3 rounded-2xl
                     hover:brightness-110 hover:shadow-[0_0_16px_4px_rgba(255,215,0,0.65)]
                     relative overflow-hidden text-center text-base sm:text-lg transition focus:outline-gold
                   "
-                  onClick={handleMobileNav}
                   aria-label="Get Your Free Audit"
                 >
                   <span className="relative z-10">Get Your Free Audit</span>
                   <span className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 hover:opacity-60 transition-opacity duration-300 bg-gold blur-lg z-0" />
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -193,24 +195,22 @@ const Navbar = () => {
 };
 
 // ---------- HERO ----------
-const Hero = () => (
+const Hero = ({ onOpenContact }) => (
   <section
     className="relative flex items-center justify-center w-full min-h-screen bg-black text-white font-poppins pt-20 sm:pt-28 xl:pt-40 pb-10 sm:pb-20 overflow-hidden"
     id="home"
   >
-    {/* --- BACKGROUND EFFECTS --- */}
     <div className="absolute inset-0 pointer-events-none z-0">
       <div className="absolute -top-36 left-1/2 -translate-x-1/2 w-[320px] sm:w-[400px] md:w-[480px] h-[320px] sm:h-[400px] md:h-[480px] bg-gold opacity-20 rounded-full blur-3xl animate-pulse" />
       <div className="absolute top-1/3 left-0 w-[100px] sm:w-[150px] md:w-[220px] h-[100px] sm:h-[150px] md:h-[220px] bg-gold opacity-10 rounded-full blur-2xl animate-pulse-slow" />
       <div className="absolute bottom-0 right-0 w-[90px] sm:w-[130px] md:w-[180px] h-[90px] sm:h-[130px] md:h-[180px] bg-gold opacity-10 rounded-full blur-2xl animate-pulse" />
       <div className="absolute inset-0 bg-gradient-to-br from-black via-zinc-900/80 to-black" />
     </div>
-
     <div className="relative z-10 flex flex-col-reverse xl:flex-row items-center w-full px-2 sm:px-6 gap-8 xl:gap-0 xl:justify-between">
       {/* --- LEFT: TEXT CONTENT --- */}
       <div className="flex-1 flex flex-col justify-center items-start xl:items-start text-left xl:text-left w-full max-w-2xl xl:ml-16 mb-10 xl:mb-0">
         <span className="mb-5 sm:mb-7 inline-block bg-gold/90 text-black font-lato font-bold px-4 sm:px-6 py-1 rounded-full uppercase tracking-wide text-xs sm:text-sm shadow-md animate-fadeIn">
-          Google Partner Certified
+          Google Certified Partner 
         </span>
         <h1 className="text-3xl sm:text-5xl xl:text-6xl font-extrabold mb-4 sm:mb-5 text-gold drop-shadow-xl leading-tight animate-fadeInUp">
           Campaigns That Perform.
@@ -219,8 +219,9 @@ const Hero = () => (
           We drive real ROI through lead generation, eCommerce ads,<br className="hidden sm:block" />
           and guaranteed SEO — no fluff.
         </h2>
-        <a
-          href="/Contact"
+        <button
+          type="button"
+          onClick={onOpenContact}
           className="
             bg-gold text-black font-bold px-7 sm:px-10 py-3 sm:py-4 rounded-2xl text-base sm:text-lg shadow-lg
             transition-all duration-200 animate-fadeInUp mb-5 sm:mb-7
@@ -233,7 +234,7 @@ const Hero = () => (
         >
           <span className="relative z-10">Get Your Free Audit</span>
           <span className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 hover:opacity-60 transition-opacity duration-300 bg-gold blur-lg z-0" />
-        </a>
+        </button>
       </div>
       {/* --- RIGHT: LOTTIE ANIMATION --- */}
       <div className="flex-1 w-full flex justify-center items-center">
@@ -247,8 +248,6 @@ const Hero = () => (
         </div>
       </div>
     </div>
-
-    {/* --- SCROLL INDICATOR & BOTTOM GLOW --- */}
     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-14 sm:h-20 bg-gold opacity-15 blur-2xl rounded-full pointer-events-none" />
     <div className="absolute bottom-4 sm:bottom-7 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center">
       <span className="text-gold text-xl sm:text-2xl animate-bounce">↓</span>
@@ -284,14 +283,13 @@ const Hero = () => (
   </section>
 );
 
-
 // ---------- WHY CHOOSE US SECTION ----------
 
 
 // Sample data (update as before)
 const whyChooseItems = [
   {
-    label: "Google Partner Certified",
+    label: "Google Certified Partner ",
     badge: PartnerBadge, // Or use import as mentioned before
     link: "https://www.google.com/partners/agency?id=2595684232",
     desc: "Your campaigns are handled by certified pros.",
@@ -388,123 +386,156 @@ const ServicesSnapshot = () => (
   </section>
 );
 
-// ---------- CLIENT RESULTS ----------
+
+
+
+
+
+
+
+
+const clientResults = [
+  {
+    adSpend: "£10K",
+    revenue: "£80K",
+    desc: "Plumbing Client (UK)",
+    roi: "800%",
+  },
+  {
+    adSpend: "$3,000",
+    revenue: "$30,000",
+    desc: "US Dentist",
+    roi: "1000%",
+  },
+  {
+    adSpend: "$45,000",
+    revenue: "$1,200,000",
+    desc: "Ecom Store (US)",
+    roi: "2567%",
+  },
+  {
+    adSpend: "€12,000",
+    revenue: "€120,000",
+    desc: "EU SaaS Startup",
+    roi: "1000%",
+  },
+];
+
 const ClientResults = () => (
-  <section className="relative py-20 px-4 bg-gradient-to-br from-black via-zinc-900/95 to-black overflow-hidden">
-    {/* --- Animated gold orbs, background --- */}
+  <section className="relative py-12 px-1 sm:py-20 sm:px-4 bg-gradient-to-br from-black via-zinc-900/95 to-black overflow-hidden">
+    {/* Background orbs */}
     <div className="pointer-events-none absolute inset-0 z-0">
-      {/* Left orb */}
       <div className="absolute -top-24 -left-16 w-[170px] h-[170px] bg-gold/30 rounded-full blur-3xl opacity-30 animate-pulse-slow2"></div>
-      {/* Right orb */}
       <div className="absolute bottom-10 -right-10 w-[120px] h-[120px] bg-gold/20 rounded-full blur-2xl opacity-25 animate-pulse-slow"></div>
-      {/* Subtle center orb */}
       <div className="absolute left-1/2 top-2/3 -translate-x-1/2 w-[270px] h-[100px] bg-gold/15 rounded-full blur-2xl opacity-25 animate-pulse"></div>
     </div>
 
-    {/* --- Glassy Results Card --- */}
-    <div className="max-w-2xl mx-auto relative z-10">
+    <div className="max-w-5xl mx-auto relative z-10">
       <div
-        className="
-          rounded-3xl border border-gold/25 bg-white/10
-          shadow-2xl px-8 py-14 flex flex-col items-center text-center
-          backdrop-blur-xl
-          animate-fadeInUp
-          ring-2 ring-gold/10
-        "
+        className="rounded-3xl border border-gold/25 bg-white/10 shadow-2xl px-0 sm:px-8 py-8 sm:py-14 backdrop-blur-xl animate-fadeInUp ring-2 ring-gold/10"
         style={{
-          background:
-            "linear-gradient(115deg,rgba(18,17,13,0.84) 70%,rgba(255,215,0,0.07))",
+          background: "linear-gradient(115deg,rgba(18,17,13,0.84) 70%,rgba(255,215,0,0.07))",
         }}
       >
-        {/* Title */}
-        <h4 className="text-2xl font-black text-gold mb-2 tracking-tight drop-shadow-gold">Client Results</h4>
-        {/* Animated gold bar */}
-        <div className="w-16 h-1.5 rounded-full bg-gradient-to-r from-gold/70 via-white/80 to-gold/50 mb-7 animate-bar-pulse"></div>
-
-        {/* Numbers, pop, and glow */}
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-5 items-center justify-center">
-          <span className="text-3xl sm:text-4xl font-extrabold text-gold drop-shadow-gold animate-goldPulse">£10K</span>
-          <span className="font-semibold text-base sm:text-lg text-white/90">in ad spend</span>
-          <span className="hidden sm:inline text-gold font-black text-2xl">→</span>
-          <span className="text-3xl sm:text-4xl font-extrabold text-gold drop-shadow-gold animate-goldPulse2">£80K</span>
-          <span className="font-semibold text-base sm:text-lg text-white/90">revenue</span>
+        <h4 className="text-xl sm:text-2xl font-black text-gold mb-2 tracking-tight drop-shadow-gold px-4 sm:px-0">Client Results</h4>
+        <div className="w-16 h-1.5 rounded-full bg-gradient-to-r from-gold/70 via-white/80 to-gold/50 mb-6 animate-bar-pulse mx-4 sm:mx-0"></div>
+        
+        {/* Cards */}
+        <div
+          className="
+            flex sm:grid gap-5 sm:gap-6
+            overflow-x-auto sm:overflow-x-visible
+            snap-x sm:snap-none pb-3
+            sm:grid-cols-2 lg:grid-cols-4
+            px-3
+            scrollbar-thin scrollbar-thumb-[#FFD70044] scrollbar-track-[#181818]
+          "
+        >
+          {clientResults.map((r, i) => (
+            <div
+              key={i}
+              className="
+                flex-shrink-0 snap-center
+                box-border
+                min-w-[80vw] max-w-[85vw] xs:min-w-[70vw] xs:max-w-[75vw]
+                sm:min-w-0 sm:max-w-none
+                bg-black/85 rounded-2xl border border-gold/20 shadow-lg
+                p-4 xs:p-5 flex flex-col items-center justify-center
+                hover:scale-[1.04] hover:shadow-gold/30 transition
+                mx-auto
+                focus-within:ring-2 focus-within:ring-gold
+                relative
+              "
+              style={{
+                animation: `fadeInUp .65s ${(i * 0.11) + 0.1}s both`,
+              }}
+              tabIndex={0}
+            >
+              <div className="text-gold/80 text-[0.80rem] font-bold uppercase tracking-widest mb-1 text-center">{r.desc}</div>
+              <div className="flex items-end gap-1 justify-center mb-2 flex-wrap">
+                <span className="text-xl xs:text-2xl sm:text-3xl font-extrabold text-gold drop-shadow-gold animate-goldPulse">{r.adSpend}</span>
+                <span className="ml-1 text-xs xs:text-sm sm:text-base text-white/85 font-semibold" style={{lineHeight: 1}}>ad spend</span>
+                <span className="hidden sm:inline mx-2 text-gold font-black text-2xl">→</span>
+                <span className="text-xl xs:text-2xl sm:text-3xl font-extrabold text-gold drop-shadow-gold animate-goldPulse2">{r.revenue}</span>
+                <span className="ml-1 text-xs xs:text-sm sm:text-base text-white/85 font-semibold" style={{lineHeight: 1}}>revenue</span>
+              </div>
+              <div className="text-white/70 text-xs xs:text-sm sm:text-base italic pt-1">ROI: {r.roi}</div>
+            </div>
+          ))}
         </div>
-        {/* Description */}
-        <div className="mt-5">
-          <span className="italic text-sm text-white/70">Real results. Zero fluff. Clients see ROI, not excuses.</span>
+        <div className="mt-5 text-center px-3">
+          <span className="italic text-xs sm:text-sm text-white/70">
+            Real results. Zero fluff. Clients see ROI, not excuses.
+          </span>
         </div>
       </div>
     </div>
-
-    {/* Decorative dot */}
     <div className="absolute bottom-8 right-10 w-9 h-9 bg-gold/25 rounded-full blur-xl opacity-40 pointer-events-none z-0" />
     <style>{`
       .drop-shadow-gold { filter: drop-shadow(0 2px 15px #FFD70088);}
-      @keyframes pulse-slow {
-        0%,100% { opacity: 0.30;}
-        50% { opacity: 0.45;}
-      }
-      @keyframes pulse-slow2 {
-        0%,100% { opacity: 0.18;}
-        50% { opacity: 0.32;}
-      }
-      .animate-pulse-slow {
-        animation: pulse-slow 3.2s cubic-bezier(0.4,0,0.6,1) infinite;
-      }
-      .animate-pulse-slow2 {
-        animation: pulse-slow2 4.3s cubic-bezier(0.4,0,0.6,1) infinite;
-      }
-      @keyframes goldPulse {
-        0%,100% { text-shadow: 0 0 14px #FFD70077;}
-        55% { text-shadow: 0 0 26px #FFD700;}
-      }
-      @keyframes goldPulse2 {
-        0%,100% { text-shadow: 0 0 10px #FFD70044;}
-        65% { text-shadow: 0 0 28px #FFD700BB;}
-      }
-      .animate-goldPulse {
-        animation: goldPulse 2.5s cubic-bezier(0.4,0,0.6,1) infinite;
-      }
-      .animate-goldPulse2 {
-        animation: goldPulse2 2.9s cubic-bezier(0.4,0,0.6,1) infinite;
-      }
-      @keyframes bar-pulse {
-        0%,100% { opacity: 0.75;}
-        55% { opacity: 1;}
-      }
-      .animate-bar-pulse {
-        animation: bar-pulse 2.3s ease-in-out infinite;
-      }
+      @keyframes fadeInUp { 0% { opacity: 0; transform: translateY(40px);} 100% { opacity: 1; transform: translateY(0);}}
+      .animate-fadeInUp { animation: fadeInUp 0.8s cubic-bezier(0.16,1,0.3,1) both;}
+      @keyframes pulse-slow { 0%,100% { opacity: 0.30;} 50% { opacity: 0.45;}}
+      @keyframes pulse-slow2 { 0%,100% { opacity: 0.18;} 50% { opacity: 0.32;}}
+      .animate-pulse-slow { animation: pulse-slow 3.2s cubic-bezier(0.4,0,0.6,1) infinite;}
+      .animate-pulse-slow2 { animation: pulse-slow2 4.3s cubic-bezier(0.4,0,0.6,1) infinite;}
+      @keyframes goldPulse { 0%,100% { text-shadow: 0 0 14px #FFD70077;} 55% { text-shadow: 0 0 26px #FFD700;}}
+      @keyframes goldPulse2 { 0%,100% { text-shadow: 0 0 10px #FFD70044;} 65% { text-shadow: 0 0 28px #FFD700BB;}}
+      .animate-goldPulse { animation: goldPulse 2.5s cubic-bezier(0.4,0,0.6,1) infinite;}
+      .animate-goldPulse2 { animation: goldPulse2 2.9s cubic-bezier(0.4,0,0.6,1) infinite;}
+      @keyframes bar-pulse { 0%,100% { opacity: 0.75;} 55% { opacity: 1;}}
+      .animate-bar-pulse { animation: bar-pulse 2.3s ease-in-out infinite;}
+      .scrollbar-thin::-webkit-scrollbar { height: 7px;}
+      .scrollbar-thumb-[#FFD70044]::-webkit-scrollbar-thumb { background: #FFD70044; border-radius: 4px;}
+      .scrollbar-track-[#181818]::-webkit-scrollbar-track { background: #181818;}
     `}</style>
   </section>
 );
 
-const testimonials = [
-  {
-    quote: "Leads Magnet delivered 8x ROI on our campaigns. Impressive!",
-    name: "John Doe",
-    role: "Plumbing Business",
-    img: "https://placehold.co/96x96",
-  },
-  {
-    quote: "Booked out our clinic for 2 months straight.",
-    name: "Dr. Sarah Lee",
-    role: "Dental Clinic",
-    img: "https://placehold.co/96x96",
-  },
-  {
-    quote: "No-nonsense results. Highly recommended.",
-    name: "Samir Patel",
-    role: "eCommerce Store",
-    img: "https://placehold.co/96x96",
-  },
-  {
-    quote: "They actually cared about our KPIs. Great partner.",
-    name: "Fatima Z.",
-    role: "Consulting Agency",
-    img: "https://placehold.co/96x96",
-  },
-];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const testimonials = [
+//   ...testimonials removed...
+// ];
 
 const GOLD = "#FFD700";
 
@@ -537,227 +568,26 @@ const cardAnim = {
   })
 };
 
-export function TestimonialsCarousel() {
-  const [current, setCurrent] = useState(0);
-  const timeoutRef = useRef(null);
+// export function TestimonialsCarousel() {
+//   ...testimonials carousel code commented out...
+// }
 
-  // Mobile detection
-  const [isMobile, setIsMobile] = useState(() =>
-    typeof window !== "undefined" && window.innerWidth < 640
-  );
-  useEffect(() => {
-    const handleResize = () =>
-      setIsMobile(window.innerWidth < 640);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
-  useEffect(() => {
-    timeoutRef.current = setTimeout(() => {
-      setCurrent((c) => (c + 1) % testimonials.length);
-    }, 5500);
-    return () => clearTimeout(timeoutRef.current);
-  }, [current]);
-
-  function go(dir) {
-    setCurrent((c) => {
-      if (dir === "next") return (c + 1) % testimonials.length;
-      if (dir === "prev") return (c - 1 + testimonials.length) % testimonials.length;
-      return c;
-    });
-  }
-
-  // Get indices for prev, current, next
-  const getIdx = (offset) => (current + offset + testimonials.length) % testimonials.length;
-
-  // Cards to display
-  const cards = [
-    { ...testimonials[getIdx(-1)], pos: -1 },
-    { ...testimonials[getIdx(0)], pos: 0 },
-    { ...testimonials[getIdx(1)], pos: 1 }
-  ];
-
-  return (
-    <section className="relative py-12 sm:py-16 bg-black" id="testimonials">
-      <h3 className="text-2xl sm:text-4xl font-black text-gold mb-10 sm:mb-14 text-center drop-shadow animate-fadeInUp">
-        What Our Clients Say
-      </h3>
-      <div className="flex flex-col items-center w-full">
-        {/* Carousel row */}
-        <div className="relative w-full flex items-center justify-center min-h-[290px] sm:min-h-[360px] max-w-[97vw] sm:max-w-3xl mx-auto">
-          {cards.map((card, idx) => {
-            if (isMobile && card.pos !== 0) return null;
-            return (
-              <AnimatePresence key={card.name + card.pos + current}>
-                <motion.div
-                  key={card.name + card.pos + current}
-                  custom={card.pos}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  variants={cardAnim}
-                  className={`
-                    absolute sm:static left-0 right-0 mx-auto
-                    ${card.pos === 0 ? "z-20" : "z-10"}
-                    flex flex-col items-center
-                    w-full
-                    px-2
-                    ${isMobile ? "min-w-[90vw]" : "sm:w-[350px]"}
-                  `}
-                  style={{
-                    pointerEvents: card.pos === 0 ? "auto" : "none"
-                  }}
-                >
-                  {/* --- Neon avatar overlapping card --- */}
-                  <div
-                    className="absolute left-1/2 -translate-x-1/2"
-                    style={{
-                      top: isMobile ? -33 : -48,
-                      zIndex: 20,
-                    }}
-                  >
-                    <div
-                      className="neon-avatar flex items-center justify-center"
-                      style={{
-                        width: isMobile ? 56 : 78,
-                        height: isMobile ? 56 : 78,
-                        borderRadius: "9999px",
-                        background: "#111",
-                        position: "relative",
-                        boxShadow:
-                          `0 0 0 3px #222, 0 0 16px 6px #FFD70088, 0 0 44px 9px #FFD70044`,
-                        overflow: "visible",
-                        animation: "pulseNeon 2.2s cubic-bezier(0.4,0,0.6,1) infinite"
-                      }}
-                    >
-                      <img
-                        src={card.img}
-                        alt={card.name}
-                        className="rounded-full object-cover"
-                        style={{
-                          width: isMobile ? 48 : 66,
-                          height: isMobile ? 48 : 66,
-                          borderRadius: "9999px",
-                          border: "3px solid #FFD700",
-                          zIndex: 1,
-                          boxShadow: "0 0 18px 0 #FFD70055",
-                        }}
-                      />
-                      {/* Extra neon overlay for pop */}
-                      <span style={{
-                        position: "absolute",
-                        inset: 0,
-                        borderRadius: "9999px",
-                        boxShadow: "0 0 16px 4px #FFD70090, 0 0 36px 7px #FFD70040",
-                        pointerEvents: "none",
-                        zIndex: 0,
-                        opacity: 0.8,
-                        mixBlendMode: "screen"
-                      }} />
-                    </div>
-                  </div>
-                  {/* Card */}
-                  <div className={`
-                    bg-black/80 border border-gold/30 rounded-3xl pt-12 pb-8 px-5 sm:pt-16 sm:pb-9 sm:px-7 shadow-xl
-                    flex flex-col items-center text-center relative
-                    ${card.pos === 0 ? "" : "opacity-65"}
-                  `}>
-                    {/* Neon shadow under avatar */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: isMobile ? 7 : 15,
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        width: isMobile ? 44 : 66,
-                        height: isMobile ? 14 : 22,
-                        borderRadius: "40%",
-                        background: "radial-gradient(circle, #FFD70055 35%, transparent 80%)",
-                        zIndex: 1,
-                        filter: "blur(7px)",
-                        opacity: 0.6
-                      }}
-                    />
-                    {/* Quote mark */}
-                    <svg
-                      className="absolute -top-2 left-1/2 -translate-x-1/2 w-10 h-10 sm:w-12 sm:h-12 text-gold/10 z-0 select-none pointer-events-none"
-                      viewBox="0 0 60 60"
-                      fill="none"
-                    >
-                      <text
-                        x="50%"
-                        y="60%"
-                        textAnchor="middle"
-                        fontSize={isMobile ? 36 : 48}
-                        fontWeight="bold"
-                        fill="currentColor"
-                        opacity="0.6"
-                      >“</text>
-                    </svg>
-                    <p className="text-base sm:text-lg text-white/90 italic font-medium mb-5 z-10">{card.quote}</p>
-                    <span className="font-black text-gold text-base sm:text-lg mb-1 z-10">{card.name}</span>
-                    <span className="text-gold/70 text-xs sm:text-sm font-semibold z-10">{card.role}</span>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            );
-          })}
-        </div>
-        {/* Arrows + dots */}
-        <div className="flex items-center justify-center gap-4 sm:gap-5 mt-9 sm:mt-12">
-          <button
-            className="w-11 h-11 rounded-full border-2 border-gold text-gold flex items-center justify-center bg-black/60 hover:bg-gold/20 hover:scale-110 transition text-xl"
-            onClick={() => go("prev")}
-            aria-label="Previous testimonial"
-            tabIndex={0}
-          >
-            <svg width="22" height="22" viewBox="0 0 22 22"><polyline points="14 6 8 11 14 16" fill="none" stroke={GOLD} strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </button>
-          <div className="flex gap-2 sm:gap-3">
-            {testimonials.map((_, i) => (
-              <span
-                key={i}
-                className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-200 ${current === i ? "bg-gold scale-125 shadow-gold" : "bg-gold/30"}`}
-                style={{ boxShadow: current === i ? `0 0 8px 1px ${GOLD}90` : undefined }}
-              />
-            ))}
-          </div>
-          <button
-            className="w-11 h-11 rounded-full border-2 border-gold text-gold flex items-center justify-center bg-black/60 hover:bg-gold/20 hover:scale-110 transition text-xl"
-            onClick={() => go("next")}
-            aria-label="Next testimonial"
-            tabIndex={0}
-          >
-            <svg width="22" height="22" viewBox="0 0 22 22"><polyline points="8 6 14 11 8 16" fill="none" stroke={GOLD} strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </button>
-        </div>
-      </div>
-      {/* Neon Pulse Animation */}
-      <style>{`
-        .shadow-gold { box-shadow: 0 0 10px 1px #FFD70099; }
-        @keyframes pulseNeon {
-          0%,100% { box-shadow: 0 0 0 3px #222, 0 0 16px 6px #FFD70088, 0 0 44px 9px #FFD70033; }
-          40% { box-shadow: 0 0 0 4px #FFD700AA, 0 0 34px 14px #FFD70055, 0 0 74px 18px #FFD70022;}
-          70% { box-shadow: 0 0 0 3px #FFD70088, 0 0 16px 8px #FFD70077, 0 0 44px 13px #FFD70033;}
-        }
-      `}</style>
-    </section>
-  );
-}
 // ---------- CTA STRIP ----------
-const CTAStrip = () => (
+const CTAStrip = ({ onOpenContact }) => (
   <section className="relative py-14 px-4 bg-black">
     <div className="bg-gradient-to-r from-gold/90 to-gold/70 rounded-3xl shadow-2xl flex flex-col sm:flex-row items-center justify-between px-8 py-10 gap-7 sm:gap-0 animate-fadeInUp">
       <div className="text-2xl sm:text-3xl font-black text-black tracking-tight">
         Let’s build a campaign that performs.
       </div>
-      <a
-        href="/Contact"
+      <button
+        type="button"
+        onClick={onOpenContact}
         className="mt-4 sm:mt-0 bg-black text-gold font-bold px-10 py-4 rounded-2xl text-lg shadow-lg hover:scale-105 hover:brightness-110 hover:shadow-gold/40 transition-all duration-200 pulse-gold"
         aria-label="Claim Your Free Audit"
       >
         Claim Your Free Audit
-      </a>
+      </button>
     </div>
     <style>{`
       .pulse-gold {
@@ -770,6 +600,9 @@ const CTAStrip = () => (
     `}</style>
   </section>
 );
+
+
+
 // ---------- FOOTER ----------
 const Footer = () => (
   <footer className="relative z-10 w-full bg-black backdrop-blur-xl border-t border-gold/20 py-8 px-4 mt-12">
@@ -794,8 +627,9 @@ const Footer = () => (
         <li><a href="/about" className="hover:text-gold transition">About</a></li>
         <li><a href="/services" className="hover:text-gold transition">Services</a></li>
         <li><a href="/CasePage" className="hover:text-gold transition">Case Studies</a></li>
-        <li><a href="/testimonials" className="hover:text-gold transition">Testimonials</a></li>
+       {/* <li><a href="/testimonials" className="hover:text-gold transition">Testimonials</a></li> */}
         <li><a href="/BlogPage" className="hover:text-gold transition">Blog</a></li>
+        <li><a href="/Contacta" className="hover:text-gold transition">Contact</a></li>
       </ul>
       {/* Social & Copyright */}
       <div className="flex flex-col-reverse sm:flex-row items-center gap-3 sm:gap-4">
@@ -819,12 +653,12 @@ const Footer = () => (
 
 
 // ---------- APP ----------
+
 // ---------- LINK INTERCEPTOR ----------
 function LinkInterceptor() {
   const navigate = useNavigate();
   useEffect(() => {
     const handler = (e) => {
-      // Only intercept left-clicks
       if (e.defaultPrevented || e.button !== 0) return;
       const anchor = e.target.closest("a[href]");
       if (
@@ -834,7 +668,6 @@ function LinkInterceptor() {
         anchor.getAttribute("target") !== "_blank"
       ) {
         const href = anchor.getAttribute("href");
-        // Ignore external, hash, mailto:, tel:, download
         if (
           href.startsWith("http") ||
           href.startsWith("mailto:") ||
@@ -857,30 +690,65 @@ function LinkInterceptor() {
 
 // ---------- MAIN APP ----------
 export default function App() {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  // Keyboard close for modal
+  useEffect(() => {
+    if (!modalOpen) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") setModalOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [modalOpen]);
+
   return (
     <BrowserRouter>
       <LinkInterceptor />
-      <Navbar />
+      <Navbar onOpenContact={() => setModalOpen(true)} />
+      {/* Modal overlay for Contact */}
+      {modalOpen && (
+        <div className="fixed inset-0 z-[9999] bg-black/70 flex items-center justify-center animate-fadeIn">
+          <div className="absolute inset-0" onClick={() => setModalOpen(false)} />
+          <div className="relative z-10">
+            <Contact open={modalOpen} onClose={() => setModalOpen(false)} />
+          </div>
+          <style>{`
+            .animate-fadeIn {
+              animation: fadeIn 0.33s;
+            }
+            @keyframes fadeIn {
+              from { opacity: 0;}
+              to { opacity: 1;}
+            }
+          `}</style>
+        </div>
+      )}
       <Routes>
         <Route
           path="/"
           element={
             <>
-              <Hero />
+              <Hero onOpenContact={() => setModalOpen(true)} />
               <WhyChooseUs />
               <ServicesSnapshot />
               <ClientResults />
-              <TestimonialsCarousel />
-              <CTAStrip />
+              <Contacta/>
+              {/* <TestimonialsCarousel /> */}
+              <CTAStrip onOpenContact={() => setModalOpen(true)} />
             </>
           }
         />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/services" element={<ServicesPage />} />
-        <Route path="/testimonials" element={<Testimonials />} />
-        <Route path="/CasePage" element={<CasePage />} />
-        <Route path="/Contact" element={<Contact />} />
+        {/* <Route path="/testimonials" element={<Testimonials />} /> */}
+        
+        {/* Optionally, /Contact as a page */}
+        <Route path="/Contact" element={<Contact open={true} />} />
         <Route path="/BlogPage" element={<BlogPage />} />
+         <Route path="/Contacta" element={<Contacta />} />
+
+        <Route path="/CasePage" element={<CasePage onOpenContact={() => setModalOpen(true)} />} />
       </Routes>
       <Footer />
       <ExtraStyles />

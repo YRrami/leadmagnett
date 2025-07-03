@@ -1,198 +1,388 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import emailjs from "emailjs-com";
+import { CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 
-// Sample form handling and data storage
-export default function ContactPage() {
+// Focus trap hook for accessibility (keyboard navigation)
+function useFocusTrap(ref, open) {
+  useEffect(() => {
+    if (!open || !ref.current) return;
+    const node = ref.current;
+    const focusable = node.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (first) first.focus();
+    const handler = (e) => {
+      if (e.key !== "Tab") return;
+      if (focusable.length === 0) return;
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    node.addEventListener("keydown", handler);
+    return () => node.removeEventListener("keydown", handler);
+  }, [ref, open]);
+}
+
+// Reusable field wrapper
+const Field = ({ label, required, error, children }) => (
+  <div className="flex flex-col mb-2">
+    <label className="text-white/90 font-semibold mb-1 text-[1rem]">
+      {label}
+      {required && <span className="text-[#FFD700] ml-1">*</span>}
+    </label>
+    {children}
+    {error && <span className="text-red-400 mt-1 text-xs">{error}</span>}
+  </div>
+);
+
+export default function Contact({ open, onClose }) {
+  // Form state
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    fullName: "",
+    businessName: "",
+    businessEmail: "",
     phone: "",
+    website: "",
     businessType: "",
-    message: "",
+    revenue: "",
+    adSpend: "",
+    auditGoal: "",
   });
+  const [errors, setErrors] = useState({});
+  const [status, setStatus] = useState(""); // "success" | "error" | ""
+  const [loading, setLoading] = useState(false);
 
+  // Lock background scroll when modal is open
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, [open]);
+
+  // ESC to close modal
+  useEffect(() => {
+    if (!open) return;
+    const esc = (e) => e.key === "Escape" && onClose && onClose();
+    window.addEventListener("keydown", esc);
+    return () => window.removeEventListener("keydown", esc);
+  }, [open, onClose]);
+
+  // Focus trap for accessibility
+  const panelRef = useRef();
+  useFocusTrap(panelRef, open);
+
+  // Validation logic
+  function validate() {
+    const e = {};
+    if (!formData.fullName.trim()) e.fullName = "Full name is required.";
+    if (!formData.businessEmail.trim()) {
+      e.businessEmail = "Email is required.";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.businessEmail)
+    ) {
+      e.businessEmail = "Invalid email format.";
+    }
+    if (!formData.businessType.trim()) e.businessType = "Required.";
+    if (!formData.revenue) e.revenue = "Select monthly revenue.";
+    if (formData.website && !/^https?:\/\/.+\..+/i.test(formData.website))
+      e.website = "URL must start with http(s)://";
+    if (!formData.auditGoal.trim()) e.auditGoal = "Required.";
+    return e;
+  }
+
+  // Handle input changes
   const handleChange = (e) => {
-    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [e.target.name]: e.target.value,
     }));
+    setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
   };
 
+  // ---- EMAILJS submit handler ----
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // EmailJS Service Integration
+    setStatus("");
+    const eObj = validate();
+    setErrors(eObj);
+    if (Object.keys(eObj).length) return;
+    setLoading(true);
+
     const templateParams = {
-      from_name: formData.name,
-      from_email: formData.email,
+      full_name: formData.fullName,
+      business_name: formData.businessName,
+      business_email: formData.businessEmail,
       phone: formData.phone,
+      website: formData.website,
       business_type: formData.businessType,
-      message: formData.message,
+      revenue: formData.revenue,
+      ad_spend: formData.adSpend,
+      audit_goal: formData.auditGoal,
     };
 
-    // Send email using EmailJS
     emailjs
       .send(
-        "your_service_id", // Replace with your EmailJS service ID
-        "your_template_id", // Replace with your template ID
+        "your_service_id",      // <--- Replace with your service ID
+        "your_template_id",     // <--- Replace with your template ID
         templateParams,
-        "your_user_id" // Replace with your user ID from EmailJS dashboard
+        "your_user_id"          // <--- Replace with your user/public key
       )
       .then(
-        (response) => {
-          console.log("SUCCESS", response.status, response.text);
-          // You can display a success message or reset form data
+        () => {
+          setStatus("success");
+          setFormData({
+            fullName: "",
+            businessName: "",
+            businessEmail: "",
+            phone: "",
+            website: "",
+            businessType: "",
+            revenue: "",
+            adSpend: "",
+            auditGoal: "",
+          });
+          setLoading(false);
         },
         (err) => {
-          console.log("FAILED", err);
-          // Handle error (e.g., display error message)
+          setStatus("error");
+          setLoading(false);
         }
       );
   };
 
+  // Click backdrop to close
+  const handleBackdrop = useCallback((e) => {
+    if (e.target === e.currentTarget && onClose) onClose();
+  }, [onClose]);
+
+  if (!open) return null;
+
   return (
-    <main className="min-h-screen bg-black text-white font-poppins flex flex-col items-center py-28 px-4">
-      {/* Hero Section */}
-      <section className="text-center mb-9 mt-9">
-        <div className="mb-5">
-          <span className="text-xs tracking-widest font-semibold uppercase bg-[#FFD700] text-black px-4 py-1 rounded-full mb-9 shadow-sm">
-            GET A FREE AUDIT
-          </span>
-        </div>
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-[#FFD700] text-center tracking-tight mb-4">
-          Contact Us for a Free Audit
-        </h1>
-        <p className="text-lg text-white/70 max-w-3xl mx-auto font-light">
-          Ready to take your business to the next level? Fill out the form below to book your free audit and get expert insights into your growth potential.
-        </p>
-        {/* ---- SOFT DIVIDER ---- */}
-      </section>
-      <div className="w-full max-w-2xl px-5 mt-2 mb-10">
-        <div className="w-full h-[1.5px] bg-gradient-to-r from-transparent via-[#FFD70099] to-transparent" />
-      </div>
-
-      {/* Contact Form Section */}
-      <div className="max-w-4xl w-full px-5 mx-auto mb-16">
-        <form onSubmit={handleSubmit} className="flex flex-col space-y-6">
-          {/* Name */}
-          <div className="flex flex-col">
-            <label htmlFor="name" className="text-white/90 font-semibold mb-2">Name</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="p-4 bg-black/80 border border-gold/40 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFD700] transition-all duration-200"
-              placeholder="Enter your full name"
-              required
-            />
-          </div>
-
-          {/* Email */}
-          <div className="flex flex-col">
-            <label htmlFor="email" className="text-white/90 font-semibold mb-2">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="p-4 bg-black/80 border border-gold/40 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFD700] transition-all duration-200"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-
-          {/* Phone */}
-          <div className="flex flex-col">
-            <label htmlFor="phone" className="text-white/90 font-semibold mb-2">Phone</label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              className="p-4 bg-black/80 border border-gold/40 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFD700] transition-all duration-200"
-              placeholder="Enter your phone number"
-              required
-            />
-          </div>
-
-          {/* Business Type */}
-          <div className="flex flex-col">
-            <label htmlFor="businessType" className="text-white/90 font-semibold mb-2">Business Type</label>
-            <input
-              type="text"
-              id="businessType"
-              name="businessType"
-              value={formData.businessType}
-              onChange={handleChange}
-              className="p-4 bg-black/80 border border-gold/40 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFD700] transition-all duration-200"
-              placeholder="Enter your business type"
-              required
-            />
-          </div>
-
-          {/* Message */}
-          <div className="flex flex-col">
-            <label htmlFor="message" className="text-white/90 font-semibold mb-2">Message</label>
-            <textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              rows="5"
-              className="p-4 bg-black/80 border border-gold/40 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFD700] transition-all duration-200"
-              placeholder="Describe your needs or questions"
-              required
-            ></textarea>
-          </div>
-
-          {/* Submit Button */}
+    <div
+      className="fixed inset-0 z-[9999] flex items-center justify-center"
+      style={{
+        background: "rgba(18,18,18,0.87)",
+        overscrollBehavior: "contain",
+        transition: "background 0.2s"
+      }}
+      aria-modal="true"
+      role="dialog"
+      tabIndex={-1}
+      onClick={handleBackdrop}
+    >
+      {/* Modal panel (custom scroll area) */}
+      <div
+        ref={panelRef}
+        className="
+          relative flex flex-col bg-black border border-[#FFD700]
+          rounded-2xl shadow-2xl
+          w-full max-w-[97vw]
+          max-h-[calc(100svh-32px)]
+          sm:max-w-md md:max-w-lg
+          px-3.5 sm:px-7 py-6 sm:py-8
+          text-white font-poppins
+          animate-scaleIn
+          focus:outline-none focus:ring-2 focus:ring-[#FFD700]
+          custom-modal-scroll
+          "
+        style={{
+          boxSizing: "border-box",
+        }}
+        tabIndex={0}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Close Button */}
+        {onClose && (
           <button
-            type="submit"
-            className="w-full bg-[#FFD700] text-black font-extrabold py-4 px-6 rounded-lg hover:bg-gold/80 transition duration-300"
-          >
-            Submit
-          </button>
-        </form>
-      </div>
+            onClick={onClose}
+            className="absolute top-3 right-3 bg-gold/15 hover:bg-gold text-gold hover:text-black rounded-full p-2 font-bold text-xl transition focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
+            aria-label="Close"
+            type="button"
+            tabIndex={0}
+          >×</button>
+        )}
 
-      {/* Optional Add-ons Section */}
-      <div className="max-w-4xl w-full px-5 mx-auto mb-16 text-center">
-        <h3 className="text-2xl font-extrabold text-[#FFD700] mb-4">We Make It Easier For You.</h3>
-
-        {/* Embedded Calendar (Placeholder) */}
-        <div className="mb-12">
-          <h4 className="text-xl text-white/80 font-semibold mb-3">Schedule a Call</h4>
-          <div className="flex justify-center items-center mb-6">
-            <iframe
-              src="https://calendly.com/your-schedule-link"
-              width="100%"
-              height="500px"
-              frameBorder="0"
-              className="rounded-lg shadow-xl"
-            ></iframe>
+        <h2 className="text-lg sm:text-2xl font-black text-[#FFD700] mb-4 text-center">
+          Get Your Free Audit
+        </h2>
+        {status === "success" ? (
+          <div className="py-10 text-center text-lg font-semibold text-[#FFD700]">
+            <CheckCircle className="w-6 h-6 inline mb-1" /> Thank you! Your submission was received.
           </div>
-        </div>
-
-        {/* Google Maps Location */}
-        <h4 className="text-xl text-white/80 font-semibold mb-3">Find Us at Our Location</h4>
-        <div className="flex justify-center items-center">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d235234.4172864637!2d-0.510375667144105!3d51.28676029905459!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761b36f8b25f7b%3A0xa482fc6bb4479f56!2sLondon%2C%20UK!5e0!3m2!1sen!2sus!4v1621327393442!5m2!1sen!2sus"
-            width="100%"
-            height="350"
-            frameBorder="0"
-            style={{ border: "0" }}
-            allowFullScreen="true"
-            aria-hidden="false"
-            tabIndex="0"
-          ></iframe>
-        </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="flex flex-col gap-2.5">
+            <Field label="Full Name" required error={errors.fullName}>
+              <input
+                name="fullName"
+                type="text"
+                value={formData.fullName}
+                onChange={handleChange}
+                className="p-3 bg-black/70 border border-[#FFD700]/40 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFD700] text-base"
+                placeholder="e.g. John Smith"
+                autoComplete="off"
+                required
+              />
+            </Field>
+            <Field label="Business Name">
+              <input
+                name="businessName"
+                type="text"
+                value={formData.businessName}
+                onChange={handleChange}
+                className="p-3 bg-black/70 border border-[#FFD700]/40 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFD700] text-base"
+                placeholder="e.g. Smith Enterprises"
+              />
+            </Field>
+            <Field label="Business Email Address" required error={errors.businessEmail}>
+              <input
+                name="businessEmail"
+                type="email"
+                value={formData.businessEmail}
+                onChange={handleChange}
+                className="p-3 bg-black/70 border border-[#FFD700]/40 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFD700] text-base"
+                placeholder="your@email.com"
+                required
+              />
+            </Field>
+            <Field label="Phone Number">
+              <input
+                name="phone"
+                type="tel"
+                value={formData.phone}
+                onChange={handleChange}
+                className="p-3 bg-black/70 border border-[#FFD700]/40 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFD700] text-base"
+                placeholder="e.g. +44 123 4567"
+              />
+            </Field>
+            <Field label="Website URL" error={errors.website}>
+              <input
+                name="website"
+                type="url"
+                value={formData.website}
+                onChange={handleChange}
+                className="p-3 bg-black/70 border border-[#FFD700]/40 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFD700] text-base"
+                placeholder="https://yourwebsite.com"
+              />
+            </Field>
+            <Field label="What kind of business do you run?" required error={errors.businessType}>
+              <input
+                name="businessType"
+                type="text"
+                value={formData.businessType}
+                onChange={handleChange}
+                className="p-3 bg-black/70 border border-[#FFD700]/40 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFD700] text-base"
+                placeholder="e.g. Marketing Agency"
+                required
+              />
+            </Field>
+            <Field label="What is your current monthly revenue?" required error={errors.revenue}>
+              <select
+                name="revenue"
+                value={formData.revenue}
+                onChange={handleChange}
+                className="p-3 bg-black/70 border border-[#FFD700]/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#FFD700] text-base"
+                required
+              >
+                <option value="">Select an option</option>
+                <option>Less than $100K</option>
+                <option>$100K–$250K</option>
+                <option>$250K–$500K</option>
+                <option>More than $1M</option>
+              </select>
+            </Field>
+            <Field label="Monthly ad spend (if any)">
+              <select
+                name="adSpend"
+                value={formData.adSpend}
+                onChange={handleChange}
+                className="p-3 bg-black/70 border border-[#FFD700]/40 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#FFD700] text-base"
+              >
+                <option value="">Select an option</option>
+                <option>I don’t run ads yet</option>
+                <option>£1,000–£5,000</option>
+                <option>£5,000–£10,000</option>
+                <option>£10,000–£20,000</option>
+              </select>
+            </Field>
+            <Field label="What’s your main goal with this audit?" required error={errors.auditGoal}>
+              <input
+                name="auditGoal"
+                type="text"
+                value={formData.auditGoal}
+                onChange={handleChange}
+                className="p-3 bg-black/70 border border-[#FFD700]/40 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFD700] text-base"
+                placeholder="Your main goal or objective"
+                required
+              />
+            </Field>
+            <button
+              type="submit"
+              disabled={loading}
+              className={`
+                w-full bg-[#FFD700] text-black font-extrabold py-3 px-6 rounded-xl mt-3
+                flex items-center justify-center gap-2
+                hover:bg-[#FFD700]/80 transition duration-300
+                ${loading ? "opacity-60 cursor-not-allowed" : ""}
+              `}
+              style={{ fontSize: "1.09rem", minHeight: 46 }}
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="animate-spin h-5 w-5" /> Sending...
+                </>
+              ) : (
+                "Submit"
+              )}
+            </button>
+            {status === "error" && (
+              <div className="flex items-center justify-center mt-4 gap-2 text-red-400 text-lg animate-fade-in">
+                <AlertCircle className="w-5 h-5" /> Something went wrong. Please try again.
+              </div>
+            )}
+          </form>
+        )}
       </div>
-    </main>
+      <style>{`
+        .animate-scaleIn { animation: scaleIn 0.27s cubic-bezier(.44,1.15,.59,.98);}
+        @keyframes scaleIn { 0%{ opacity:0; transform:scale(.92) translateY(32px);} 100%{ opacity:1; transform:scale(1) translateY(0);} }
+        .animate-fade-in { animation: fade-in 0.4s; }
+        @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to   { opacity: 1; transform: translateY(0); } }
+        /* Custom scrollbar (all browsers) */
+        .custom-modal-scroll {
+          overflow-y: auto !important;
+          scrollbar-width: thin;
+          scrollbar-color: #FFD70077 #191919;
+          overscroll-behavior: contain;
+        }
+        .custom-modal-scroll::-webkit-scrollbar {
+          width: 8px;
+          background: #191919;
+        }
+        .custom-modal-scroll::-webkit-scrollbar-thumb {
+          background: linear-gradient(120deg,#FFD700cc,#FFD70044 80%);
+          border-radius: 4px;
+          border: 1.5px solid #191919;
+        }
+        .custom-modal-scroll::-webkit-scrollbar-thumb:hover {
+          background: #FFD70099;
+        }
+        @media (max-width: 640px) {
+          .custom-modal-scroll {
+            box-shadow: 0 18px 24px -18px #FFD70022 inset;
+          }
+        }
+      `}</style>
+    </div>
   );
-
 }
