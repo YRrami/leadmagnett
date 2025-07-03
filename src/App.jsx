@@ -733,7 +733,7 @@ export default function App() {
               <WhyChooseUs />
               <ServicesSnapshot />
               <ClientResults />
-              <Contacta/>
+             
               {/* <TestimonialsCarousel /> */}
               <CTAStrip onOpenContact={() => setModalOpen(true)} />
             </>
